@@ -6,6 +6,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Libraries\Token;
 use App\Models\User;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 
 class SessionController extends Controller
@@ -20,7 +21,7 @@ class SessionController extends Controller
     {
         $user = User::where('email', '=', $request->input('email'))->first();
         if (!$user || !Hash::check($request->input('password'), $user->password)) {
-            return response()->json(['message' => 'Email / No HP dan password kurang tepat']);
+            return response()->json(['message' => 'Email / No HP dan password kurang tepat'], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         list($jwt, $expire) = Token::jwtEncode($user->id);
