@@ -49,7 +49,6 @@ class SessionController extends Controller
 
             DB::commit();
             return response()->json([
-                'code' => '00',
                 'message' => 'Login berhasil',
                 'data' => [
                     'access_token' => $jwt,
@@ -59,7 +58,7 @@ class SessionController extends Controller
             ]);
         } catch (\Exception$exception) {
             DB::rollBack();
-            return response()->json(['code' => '50', 'message' => $exception->getMessage()]);
+            return response()->json(['message' => $exception->getMessage()]);
         }
     }
 }
